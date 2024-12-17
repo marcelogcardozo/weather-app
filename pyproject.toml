@@ -7,8 +7,27 @@ requires-python = ">=3.12"
 dependencies = [
     "fastapi[standard]>=0.115.6",
     "polars>=1.17.1",
+    "pre-commit>=4.0.1",
     "python-dotenv>=1.0.1",
     "redis>=5.2.1",
-    "requests>=2.32.3",
     "sqlalchemy>=2.0.36",
+]
+
+[tool.mypy]
+plugins = ["mypy_django_plugin.main"]
+strict = true
+
+[tool.ruff]
+line-length = 79
+
+[tool.ruff.format]
+quote-style = "single"
+
+[tool.ruff.lint]
+select = ["ALL"]
+
+extend-ignore = [
+    "Q000", # quotes: single quotes are preferred
+    "D212", # multi-line-summary-first-line: clashes with D213
+    "D",    # pydocstyle: removed during early development
 ]
