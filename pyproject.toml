@@ -13,7 +13,12 @@ dependencies = [
 ]
 
 [dependency-groups]
-dev = ["mypy>=1.13.0", "pre-commit>=4.0.1", "ruff>=0.8.3"]
+dev = [
+    "mypy>=1.13.0",
+    "pre-commit>=4.0.1",
+    "ruff>=0.8.3",
+    "types-redis>=4.6.0.20241004",
+]
 
 [tool.mypy]
 strict = true
