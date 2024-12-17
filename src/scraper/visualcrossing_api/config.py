@@ -4,10 +4,10 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-API_KEY = os.environ.get('VISUAL_CROSSING_API_KEY')
+WEATHER_API_KEY = os.environ.get('WEATHER_API_KEY')
 TEMPLATE_URL_API = (
     'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/'
-    '{location}/{start_date}/{final_date}?key={API_KEY}&unitGroup=metric&include=days&contentType=csv'
+    '{location}/{start_date}/{final_date}?key={WEATHER_API_KEY}&unitGroup=metric&include=days&contentType=csv'
 )
 
 ICON_URL = 'https://raw.githubusercontent.com/visualcrossing/WeatherIcons/main/SVG/1st%20Set%20-%20Color/{icon}.svg'

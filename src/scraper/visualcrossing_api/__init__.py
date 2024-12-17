@@ -3,7 +3,7 @@ from urllib.parse import quote
 
 import polars as pl
 
-import src.scraper.visualcrossing_api.config as cfg
+from src.scraper.visualcrossing_api import config
 
 
 def _get_weather_forecast(
@@ -11,18 +11,18 @@ def _get_weather_forecast(
     start_date: dt,
     end_date: dt,
 ) -> pl.DataFrame:
-    url = cfg.TEMPLATE_URL_API.format(
+    url = config.TEMPLATE_URL_API.format(
         location=location,
         start_date=start_date,
         final_date=end_date,
-        API_KEY=cfg.API_KEY,
+        WEATHER_API_KEY=config.WEATHER_API_KEY,
     )
 
     return pl.read_csv(url)
 
 
 def _get_icons_urls(icon: str) -> str:
-    return cfg.ICON_URL.format(icon=icon)
+    return config.ICON_URL.format(icon=icon)
 
 
 def get_weather_data(
