@@ -1,5 +1,8 @@
-from cache import get_cached_data, set_cached_data
-from fastapi import FastAPI
+import json
+
+from fastapi import FastAPI, Response
+
+from src.app.cache import RedisClient
 
 app = FastAPI(
     title='Weather API',
@@ -8,24 +11,28 @@ app = FastAPI(
 )
 
 
-# Routes
 @app.get('/')
 def root() -> dict[str, str]:
     return {'message': 'Welcome to the Weather API'}
 
 
 @app.get('/weather/{city}')
-def get_weather(city: str) -> dict[str, str]:
+def get_weather(city: str) -> Response:
     """Fetch weather data for a city with caching."""
-    # Check if data is in cache
-    cached_data = get_cached_data(city)
-    if cached_data:
-        return {'source': 'cache', 'data': cached_data}
+    with RedisClient() as redis_client:
+        cached_data = redis_client.get(f'weather:{city}')
 
-    # Fetch data from 3rd party API
-    weather_data = {'city': city, 'temperature': '72°F'}
+        if cached_data:
+            return Response(
+                json.loads(cached_data),
+                media_type='application/json',
+            )
 
-    # Cache the data
-    set_cached_data(city, str(weather_data))
+        weather_data = json.dumps({'city': city, 'temperature': '72°F'})
 
-    return {'source': 'api', 'data': weather_data}
+        redis_client.set(f'weather:{city}', weather_data, ex=60)
+
+        return Response(
+            weather_data,
+            media_type='application/json',
+        )
