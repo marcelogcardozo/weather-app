@@ -1,3 +1,5 @@
+from types import TracebackType
+
 import redis
 
 from config import (
@@ -9,28 +11,46 @@ from config import (
 )
 
 
-def get_redis_client() -> redis.Redis:
-    """Initialize Redis client."""
-    return redis.Redis(
-        host=REDIS_HOST,
-        port=REDIS_PORT,
-        username=REDIS_USERNAME,
-        password=REDIS_PASSWORD,
-        db=REDIS_DB,
-    )
+class RedisClient:
+    """
+    A class to initialize and manage a Redis client with environment variables.
+    """
 
+    def __init__(self) -> None:
+        self.connection = self._connect()
 
-redis_client = get_redis_client()
+    def _connect(self) -> 'redis.Redis[str]':
+        """
+        Private method to initialize the Redis client.
+        """
+        return redis.Redis(
+            host=REDIS_HOST,
+            port=REDIS_PORT,
+            username=REDIS_USERNAME,
+            password=REDIS_PASSWORD,
+            db=REDIS_DB,
+            decode_responses=True,
+        )
 
+    def __enter__(self) -> 'redis.Redis[str]':
+        """
+        Enter the runtime context and return the Redis client.
+        """
+        return self.connection
 
-def get_cached_data(key: str) -> str:
-    """Fetch data from Redis cache."""
-    data = redis_client.get(key)
-    if data:
-        return data.decode('utf-8')
-    return None
+    def __exit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_value: BaseException | None,
+        traceback: TracebackType | None,
+    ) -> None:
+        """
+        Exit the runtime context and close the Redis connection.
 
-
-def set_cached_data(key: str, value: str, expiration: int = 43200) -> None:
-    """Store data in Redis cache."""
-    redis_client.set(key, value, ex=expiration)
+        Args:
+            exc_type: The type of exception that was thrown, if any.
+            exc_value: The value of the exception that was thrown, if any.
+            traceback: The traceback of the exception that was thrown, if any.
+        """
+        if self.connection:
+            self.connection.close()
