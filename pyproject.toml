@@ -14,7 +14,6 @@ dependencies = [
 ]
 
 [tool.mypy]
-plugins = ["mypy_django_plugin.main"]
 strict = true
 
 [tool.ruff]
