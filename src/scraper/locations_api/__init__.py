@@ -1,17 +1,19 @@
 import polars as pl
 
+import src.scraper.locations_api.config as cfg
+
 
 def get_locations() -> pl.DataFrame:
     countries = pl.read_csv(
-        "https://raw.githubusercontent.com/dr5hn/countries-states-cities-database/master/csv/countries.csv",
+        cfg.TEMPLATE_URL_CSV_FILE.format(file="countries"),
         columns=["id", "iso2"],
     )
     states = pl.read_csv(
-        "https://raw.githubusercontent.com/dr5hn/countries-states-cities-database/master/csv/states.csv",
+        cfg.TEMPLATE_URL_CSV_FILE.format(file="states"),
         columns=["id", "name", "country_id"],
     )
     cities = pl.read_csv(
-        "https://raw.githubusercontent.com/dr5hn/countries-states-cities-database/master/csv/cities.csv",
+        cfg.TEMPLATE_URL_CSV_FILE.format(file="cities"),
         columns=["name", "state_id", "latitude", "longitude"],
     )
 

@@ -8,6 +8,7 @@ dependencies = [
     "fastapi[standard]>=0.115.6",
     "polars>=1.17.1",
     "python-dotenv>=1.0.1",
+    "redis>=5.2.1",
     "requests>=2.32.3",
     "sqlalchemy>=2.0.36",
 ]
