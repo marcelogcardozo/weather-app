@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/static/assets/favicon.png" />
+    <link rel="stylesheet" href="/static/css/style.css" />
+    <title>{{ title }}</title>
+  </head>
+  <body>
+    <header>
+      <h1>Weather API</h1>
+    </header>
+    <main>
+      <h2>Welcome to the Weather API</h2>
+      <p>Check the latest weather forecasts!</p>
+
+      <form action="/get_weather" method="post">
+        <div class="flex-row">
+          <label for="location">Choose a location to get the forecast:</label>
+          <select name="location" id="location">
+            {% for location in locations %}
+            <option value="{{ location }}">{{ location }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="flex-row">
+          <label for="start_date">Start date:</label>
+          <input
+            type="date"
+            id="start_date"
+            name="start_date"
+            value="{{ start_date }}"
+          />
+
+          <label for="final_date">Final date:</label>
+          <input
+            type="date"
+            id="final_date"
+            name="final_date"
+            value="{{ final_date }}"
+          />
+        </div>
+        <div class="flex-row">
+          <button id="get-forecast-button">Get Forecast</button>
+        </div>
+      </form>
+
+      {% block content %}{% endblock %}
+    </main>
+    <footer>
+      <p>Weather API ®</p>
+    </footer>
+    <script src="/static/js/main.js"></script>
+  </body>
+</html>
