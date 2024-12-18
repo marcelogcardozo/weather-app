@@ -876,6 +876,7 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "fastapi", extra = ["standard"] },
+    { name = "jinja2" },
     { name = "polars" },
     { name = "python-dotenv" },
     { name = "redis" },
@@ -893,6 +894,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "fastapi", extras = ["standard"], specifier = ">=0.115.6" },
+    { name = "jinja2", specifier = ">=3.1.4" },
     { name = "polars", specifier = ">=1.17.1" },
     { name = "python-dotenv", specifier = ">=1.0.1" },
     { name = "redis", specifier = ">=5.2.1" },
