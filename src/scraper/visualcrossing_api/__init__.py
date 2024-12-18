@@ -1,4 +1,5 @@
 from datetime import date as dt
+from datetime import timedelta as td
 from urllib.parse import quote
 
 import polars as pl
@@ -28,9 +29,13 @@ def _get_icons_urls(icon: str) -> str:
 
 def get_weather_data(
     location: str,
-    start_date: dt,
-    final_date: dt,
+    start_date: dt | None = None,
+    final_date: dt | None = None,
 ) -> pl.DataFrame:
+    if start_date is None:
+        start_date = dt.today()  # noqa: DTZ011
+        final_date = start_date + td(days=15)
+
     df_forecast = _get_weather_forecast(
         quote(location),
         start_date,
@@ -41,7 +46,7 @@ def get_weather_data(
         pl.col('datetime')
         .str.to_datetime(strict=False)
         .dt.strftime('%d/%m/%Y')
-        .alias('datetime'),
+        .alias('date'),
     )
 
     df_forecast = df_forecast.with_columns(
@@ -51,5 +56,5 @@ def get_weather_data(
     )
 
     return df_forecast.select(
-        ['datetime', 'tempmin', 'temp', 'tempmax', 'description', 'icon'],
+        ['date', 'tempmin', 'temp', 'tempmax', 'description', 'icon'],
     )
