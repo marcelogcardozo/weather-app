@@ -3,6 +3,7 @@ from urllib.parse import quote
 
 import polars as pl
 
+from config import WEATHER_API_KEY
 from src.scraper.visualcrossing_api import config
 
 
@@ -15,7 +16,7 @@ def _get_weather_forecast(
         location=location,
         start_date=start_date,
         final_date=end_date,
-        WEATHER_API_KEY=config.WEATHER_API_KEY,
+        WEATHER_API_KEY=WEATHER_API_KEY,
     )
 
     return pl.read_csv(url)
