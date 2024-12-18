@@ -5,3 +5,10 @@ repos:
       - id: ruff
         args: [--fix]
       - id: ruff-format
+
+  - repo: https://github.com/astral-sh/uv-pre-commit
+    rev: 0.5.7
+    hooks:
+      - id: pip-compile
+        name: pip-compile pyproject.toml
+        args: [pyproject.toml, -o, requirements.txt]
