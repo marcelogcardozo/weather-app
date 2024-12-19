@@ -24,14 +24,14 @@ def _get_weather_forecast(
 
 
 def _get_icons_urls(icon: str) -> str:
-    return config.ICON_URL.format(icon=icon)
+    return config.TEMPLATE_ICON_TAG.format(icon=icon)
 
 
 def get_weather_data(
     location: str,
     start_date: dt | None = None,
     final_date: dt | None = None,
-) -> pl.DataFrame:
+) -> list[dict]:
     if start_date is None:
         start_date = dt.today()  # noqa: DTZ011
         final_date = start_date + td(days=15)
@@ -57,4 +57,4 @@ def get_weather_data(
 
     return df_forecast.select(
         ['date', 'tempmin', 'temp', 'tempmax', 'description', 'icon'],
-    )
+    ).to_dicts()

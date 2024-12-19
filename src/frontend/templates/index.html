@@ -1,1 +1,23 @@
-{% extends "base.html" %} {% block content %} {% endblock %}
+{% extends "base.html" %} {% block content %} {% if weather_data %} <br /><br />
+<table>
+  <tr>
+    <th>Date</th>
+    <th>Min. Temp.</th>
+    <th>Temp.</th>
+    <th>Max. Temp.</th>
+    <th>Description</th>
+    <th>Icon</th>
+  </tr>
+  {% for data in weather_data %}
+  <tr>
+    <td>{{ data.date }}</td>
+    <td>{{ data.tempmin }}</td>
+    <td>{{ data.temp }}</td>
+    <td>{{ data.tempmax }}</td>
+    <td>{{ data.description }}</td>
+    <td>{{ data.icon | safe}}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+{% endif %} {% endblock %}

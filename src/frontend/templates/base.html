@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="/static/assets/favicon.png" />
-    <link rel="stylesheet" href="/static/css/style.css" />
+    <link rel="icon" href="{{ url_for('static', path='./assets/favicon.png') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', path='./css/style.css') }}" />
     <title>{{ title }}</title>
   </head>
   <body>
@@ -15,7 +15,7 @@
       <h2>Welcome to the Weather API</h2>
       <p>Check the latest weather forecasts!</p>
 
-      <form action="/get_weather" method="post">
+      <form action="{{ url_for("get_weather") }}" method="post">
         <div class="flex-row">
           <label for="location">Choose a location to get the forecast:</label>
           <select name="location" id="location">
@@ -51,6 +51,5 @@
     <footer>
       <p>Weather API ®</p>
     </footer>
-    <script src="/static/js/main.js"></script>
   </body>
 </html>

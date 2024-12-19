@@ -5,7 +5,4 @@ TEMPLATE_URL_API = (
 
 ICON_URL = 'https://raw.githubusercontent.com/visualcrossing/WeatherIcons/main/SVG/1st%20Set%20-%20Color/{icon}.svg'
 
-TEMPLATE_ICON_TAG = (
-    '<img src=""https://raw.githubusercontent.com/visualcrossing/WeatherIcons/'
-    'main/SVG/1st%20Set%20-%20Color/{icon}.svg" alt="{icon}">'
-)
+TEMPLATE_ICON_TAG = '<img src="https://raw.githubusercontent.com/visualcrossing/WeatherIcons/main/SVG/1st%20Set%20-%20Color/{icon}.svg" alt="{icon}">'

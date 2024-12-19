@@ -4,11 +4,11 @@ from datetime import timedelta as td
 from typing import Annotated
 
 from fastapi import FastAPI, Form, Request, Response
-from fastapi.responses import JSONResponse
+from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-from src.app.cache import RedisClient
+from src.app.utils import cache_has_key, get_cached_data, set_data_in_cache
 from src.scraper import get_locations, get_weather_data
 
 app = FastAPI(
@@ -26,11 +26,13 @@ app.mount(
 
 
 @app.get('/')
-def home(request: Request) -> Response:
+def home(request: Request, cache_key: str = '') -> Response:
     df_locations = get_locations()
 
     start_date = dt.today()  # noqa: DTZ011
-    final_date = start_date + td(days=15)
+    final_date = start_date + td(days=14)
+
+    weather_data = get_cached_data(cache_key)
 
     return templates.TemplateResponse(
         'index.html',
@@ -40,6 +42,7 @@ def home(request: Request) -> Response:
             'locations': df_locations['location'].to_list(),
             'start_date': start_date.strftime('%Y-%m-%d'),
             'final_date': final_date.strftime('%Y-%m-%d'),
+            'weather_data': weather_data,
         },
     )
 
@@ -51,29 +54,25 @@ def get_weather(
     final_date: Annotated[dt, Form()],
 ) -> dict:
     """Fetch weather data for a city with caching."""
-    with RedisClient() as redis_client:
-        cached_data = redis_client.get(f'weather:{location}')
 
-        if cached_data:
-            return JSONResponse(
-                content={
-                    'location': location,
-                    'historical_data': json.loads(cached_data),
-                },
-            )
+    cache_key = f'{location};{start_date};{final_date}'
 
-        weather_data = get_weather_data(
-            location,
-            start_date,
-            final_date,
-        ).to_dicts()
-
-        redis_client.set(
-            f'weather:{location}',
-            json.dumps(weather_data),
-            ex=60,
+    if cache_has_key(cache_key):
+        return RedirectResponse(
+            url='/',
+            status_code=303,
+            headers={'cache-key': cache_key},
         )
 
-        return JSONResponse(
-            content={'location': location, 'historical_data': weather_data},
-        )
+    weather_data = get_weather_data(
+        location,
+        start_date,
+        final_date,
+    )
+
+    set_data_in_cache(cache_key, json.dumps(weather_data), 60)
+
+    return RedirectResponse(
+        url=f'/?cache_key={cache_key}',
+        status_code=303,
+    )
