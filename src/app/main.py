@@ -52,7 +52,7 @@ def get_weather(
     location: Annotated[str, Form()],
     start_date: Annotated[dt, Form()],
     final_date: Annotated[dt, Form()],
-) -> dict:
+) -> RedirectResponse:
     """Fetch weather data for a city with caching."""
 
     cache_key = f'{location};{start_date};{final_date}'

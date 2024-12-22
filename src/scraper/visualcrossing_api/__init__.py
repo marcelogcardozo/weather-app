@@ -31,9 +31,11 @@ def get_weather_data(
     location: str,
     start_date: dt | None = None,
     final_date: dt | None = None,
-) -> list[dict]:
-    if start_date is None:
+) -> list[dict[str, str]]:
+    if not start_date:
         start_date = dt.today()  # noqa: DTZ011
+
+    if not final_date:
         final_date = start_date + td(days=15)
 
     df_forecast = _get_weather_forecast(
