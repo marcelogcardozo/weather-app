@@ -8,14 +8,16 @@ def cache_has_key(key: str) -> bool:
         return bool(redis_client.exists(key))
 
 
-def get_cached_data(key: str | None) -> str | None:
+def get_cached_data(key: str | None) -> list[dict[str, str]] | None:
     if key is None:
         return None
 
     with RedisClient() as redis_client:
         cached_data = redis_client.get(key)
         if cached_data:
-            return str(json.loads(cached_data))
+            data = json.loads(cached_data)
+            if isinstance(data, list):
+                return data
 
     return None
 
