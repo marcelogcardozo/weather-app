@@ -2,7 +2,7 @@ from urllib.parse import urlencode
 
 from config import WEATHER_API_KEY
 
-BASE_URL_API = 'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline'
+BASE_API_URL = 'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline'
 BASE_ICON_URL = 'https://raw.githubusercontent.com/visualcrossing/WeatherIcons/main/SVG/1st%20Set%20-%20Color'
 
 
@@ -19,7 +19,7 @@ def build_api_url(
     }
     query_string = urlencode(query_params)
     return (
-        f'{BASE_URL_API}/{location}/{start_date}/{final_date}?{query_string}'
+        f'{BASE_API_URL}/{location}/{start_date}/{final_date}?{query_string}'
     )
 
 

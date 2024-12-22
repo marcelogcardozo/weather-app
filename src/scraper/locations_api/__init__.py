@@ -1,50 +1,46 @@
 import polars as pl
 
-import src.scraper.locations_api.config as cfg
+from src.scraper.locations_api import config
 
 
 def get_locations() -> pl.DataFrame:
-    countries = pl.read_csv(
-        cfg.TEMPLATE_URL_CSV_FILE.format(file='countries'),
-        columns=['id', 'iso2'],
-    )
-    states = pl.read_csv(
-        cfg.TEMPLATE_URL_CSV_FILE.format(file='states'),
-        columns=['id', 'name', 'country_id'],
-    )
-    cities = pl.read_csv(
-        cfg.TEMPLATE_URL_CSV_FILE.format(file='cities'),
-        columns=['name', 'state_id', 'latitude', 'longitude'],
-    )
+    def read_csv(file_name: str, columns: list[str]) -> pl.DataFrame:
+        return pl.read_csv(config.get_csv_url(file_name), columns=columns)
+
+    countries = read_csv('countries', ['id', 'iso2'])
+    states = read_csv('states', ['id', 'name', 'country_id'])
+    cities = read_csv('cities', ['name', 'state_id', 'latitude', 'longitude'])
 
     countries = countries.filter(pl.col('iso2') == 'BR')
 
-    states_by_country = countries.join(
+    states_with_country_info = countries.join(
         states,
         left_on='id',
         right_on='country_id',
         how='inner',
     )
 
-    cities_by_states_by_countries = states_by_country.join(
+    cities_with_state_and_country_info = states_with_country_info.join(
         cities,
         left_on='id_right',
         right_on='state_id',
         how='inner',
     )
 
-    cities_by_states_by_countries = cities_by_states_by_countries.sort(
-        ['name_right', 'name', 'iso2'],
+    cities_with_state_and_country_info = (
+        cities_with_state_and_country_info.sort(
+            ['name_right', 'name', 'iso2'],
+        ).with_columns(
+            (
+                pl.col('name_right')
+                + ','
+                + pl.col('name')
+                + ','
+                + pl.col('iso2')
+            ).alias('location'),
+        )
     )
 
-    cities_by_states_by_countries = cities_by_states_by_countries.with_columns(
-        (
-            pl.col('name_right') + ',' + pl.col('name') + ',' + pl.col('iso2')
-        ).alias(
-            'location',
-        ),
-    )
-
-    return cities_by_states_by_countries.select(
+    return cities_with_state_and_country_info.select(
         ['location', 'latitude', 'longitude'],
     )
