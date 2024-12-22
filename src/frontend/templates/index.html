@@ -1,19 +1,19 @@
 {% extends "base.html" %} {% block content %} {% if weather_data %} <br /><br />
-<table>
-  <tr>
+<table class="weather-table">
+  <tr class="weather-table-header">
     <th>Date</th>
-    <th>Min. Temp.</th>
-    <th>Temp.</th>
-    <th>Max. Temp.</th>
+    <th>Temperature</th>
     <th>Description</th>
     <th>Icon</th>
   </tr>
   {% for data in weather_data %}
-  <tr>
+  <tr class="weather-table-row">
     <td>{{ data.date }}</td>
-    <td>{{ data.tempmin }}</td>
-    <td>{{ data.temp }}</td>
-    <td>{{ data.tempmax }}</td>
+    <td class="temp-column">
+      <span class="temp-min">↓ {{ data.tempmin }}°</span> | 
+      <span class="temp">{{ data.temp }}°</span> | 
+      <span class="temp-max">↑ {{ data.tempmax }}°</span>
+    </td>
     <td>{{ data.description }}</td>
     <td>{{ data.icon | safe}}</td>
   </tr>

@@ -9,16 +9,15 @@
   </head>
   <body>
     <header>
-      <h1>Weather API</h1>
+      <h1 class="title">Weather API</h1>
     </header>
     <main>
-      <h2>Welcome to the Weather API</h2>
-      <p>Check the latest weather forecasts!</p>
+      <p class="description">Check the latest weather forecasts!</p>
 
-      <form action="{{ url_for("get_weather") }}" method="post">
+      <form action="{{ url_for("get_weather") }}" method="post" class="weather-form">
         <div class="flex-row">
           <label for="location">Choose a location to get the forecast:</label>
-          <select name="location" id="location">
+          <select name="location" id="location" class="form-select">
             {% for location in locations %}
             <option value="{{ location }}">{{ location }}</option>
             {% endfor %}
@@ -31,6 +30,7 @@
             id="start_date"
             name="start_date"
             value="{{ start_date }}"
+            class="form-input"
           />
 
           <label for="final_date">Final date:</label>
@@ -39,17 +39,15 @@
             id="final_date"
             name="final_date"
             value="{{ final_date }}"
+            class="form-input"
           />
         </div>
         <div class="flex-row">
-          <button id="get-forecast-button">Get Forecast</button>
+          <button id="get-forecast-button" class="form-button">Get Forecast</button>
         </div>
       </form>
 
       {% block content %}{% endblock %}
     </main>
-    <footer>
-      <p>Weather API ®</p>
-    </footer>
   </body>
 </html>
