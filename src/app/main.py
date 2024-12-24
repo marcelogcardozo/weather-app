@@ -12,7 +12,7 @@ from src.app.utils import cache_has_key, get_cached_data, set_data_in_cache
 from src.scraper import get_locations, get_weather_data
 
 app = FastAPI(
-    title='Weather API',
+    title='Weather APP',
     description='Fetch weather data for a city',
     version='0.1.0',
 )
@@ -43,6 +43,7 @@ def home(request: Request, cache_key: str = '') -> Response:
             'start_date': start_date.strftime('%Y-%m-%d'),
             'final_date': final_date.strftime('%Y-%m-%d'),
             'weather_data': weather_data,
+            'location': cache_key.split(';')[0],
         },
     )
 

@@ -38,7 +38,7 @@
           class="logo"
           style="align-self: center"
         />
-        <h1 class="fs-2 font-monospace">Weather APP</h1>
+        <h1 class="fs-3 font-monospace">Weather APP</h1>
       </div>
       <div class="form-input-location">
         <form action="{{ url_for("get_weather") }}" method="post"
@@ -56,27 +56,30 @@
             {% endfor %}
           </select>
         </div>
-        <div class="d-flex flex-row input-data-inicial">
-          <label for="start_date">Start date:</label>
-          <input
-            type="date"
-            id="start_date"
-            name="start_date"
-            value="{{ start_date }}"
-            class="form-input font-monospace"
-          />
+        <div class="date-botao">
+        <div class="input-dates">
+          <div class="d-flex flex-row input-data-inicial">
+            <label for="start_date">Start date:</label>
+            <input
+              type="date"
+              id="start_date"
+              name="start_date"
+              value="{{ start_date }}"
+              class="form-input font-monospace"
+            />
+          </div>
+          <div class="d-flex flex-row input-data-final">
+            <label for="final_date">Final date:</label>
+            <input
+              type="date"
+              id="final_date"
+              name="final_date"
+              value="{{ final_date }}"
+              class="form-input font-monospace"
+            />
+          </div>
         </div>
-        <div class="d-flex flex-row input-data-final">
-          <label for="final_date">Final date:</label>
-          <input
-            type="date"
-            id="final_date"
-            name="final_date"
-            value="{{ final_date }}"
-            class="form-input font-monospace"
-          />
-        </div>
-        <div class="d-flex flex-row">
+        <div class="d-flex botao-form">
           <button
             id="get-forecast-button"
             class="btn btn-primary btn-rounded font-monospace"
@@ -84,6 +87,7 @@
             <i class="fas fa-search"></i>
           </button>
         </div>
+      </div>
       </div>
     </header>
     <main>{% block content %}{% endblock %}</main>

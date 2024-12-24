@@ -17,7 +17,7 @@ def _get_weather_forecast(
         start_date.strftime('%Y-%m-%d'),
         end_date.strftime('%Y-%m-%d'),
     )
-    return pl.read_csv(url)
+    return pl.read_csv(url, infer_schema_length=10000)
 
 
 def get_weather_data(

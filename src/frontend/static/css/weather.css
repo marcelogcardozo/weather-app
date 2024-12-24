@@ -29,14 +29,17 @@
   text-align: center;
 }
 
-.weather-table .temp-min {
+.temp-min {
   color: blue;
+  font-size: 0.7rem;
 }
 
-.weather-table .temp {
+.temp {
   color: green;
+  font-size: 0.7rem;
 }
 
-.weather-table .temp-max {
+.temp-max {
   color: red;
+  font-size: 0.7rem;
 }
