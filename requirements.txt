@@ -16,6 +16,10 @@ click==8.1.7
     #   rich-toolkit
     #   typer
     #   uvicorn
+colorama==0.4.6
+    # via
+    #   click
+    #   uvicorn
 dnspython==2.7.0
     # via email-validator
 email-validator==2.2.0
@@ -42,7 +46,9 @@ idna==3.10
     #   email-validator
     #   httpx
 jinja2==3.1.4
-    # via fastapi
+    # via
+    #   weather-api (pyproject.toml)
+    #   fastapi
 markdown-it-py==3.0.0
     # via rich
 markupsafe==3.0.2
@@ -96,8 +102,6 @@ uvicorn==0.34.0
     # via
     #   fastapi
     #   fastapi-cli
-uvloop==0.21.0
-    # via uvicorn
 watchfiles==1.0.3
     # via uvicorn
 websockets==14.1
