@@ -24,4 +24,4 @@ def build_api_url(
 
 
 def build_icon_tag(icon: str) -> str:
-    return f'<img src="{BASE_ICON_URL}/{icon}.svg" alt="{icon}">'
+    return f'{BASE_ICON_URL}/{icon}.svg'
