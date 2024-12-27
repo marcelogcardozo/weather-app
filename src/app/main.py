@@ -8,7 +8,12 @@ from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-from src.app.utils import cache_has_key, get_cached_data, set_data_in_cache
+from src.app.utils import (
+    cache_has_key,
+    get_cached_data,
+    get_graph_json_by_dict,
+    set_data_in_cache,
+)
 from src.scraper import get_locations, get_weather_data
 
 app = FastAPI(
@@ -33,6 +38,7 @@ def home(request: Request, cache_key: str = '') -> Response:
     final_date = start_date + td(days=14)
 
     weather_data = get_cached_data(cache_key)
+    graph_json = get_graph_json_by_dict(weather_data)
 
     return templates.TemplateResponse(
         'index.html',
@@ -44,6 +50,7 @@ def home(request: Request, cache_key: str = '') -> Response:
             'final_date': final_date.strftime('%Y-%m-%d'),
             'weather_data': weather_data,
             'location': cache_key.split(';')[0],
+            'graph_json': graph_json,
         },
     )
 

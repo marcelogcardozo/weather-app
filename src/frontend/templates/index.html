@@ -1,12 +1,15 @@
 {% extends "base.html" %} {% block content %} {% if weather_data %} <br /><br />
 
-  <div class="daily-forecasts">
-    <h4 class="font-monospace">{{ ' - '.join(location.split(',')[:2]) }}: Daily Forecasts</h4>
-    <br />
+<div class="daily-forecasts">
+  <h4 class="font-monospace">
+    {{ ' - '.join(location.split(',')[:2]) }}: Daily Forecasts
+  </h4>
+  <br />
+
   <div class="grid-container">
     {% for data in weather_data %}
     <div class="card">
-      <img src="{{ data.icon }}" class="card-img-top"/>
+      <img src="{{ data.icon }}" class="card-img-top" />
       <div class="card-body">
         <h5 class="card-title">{{ data.date }}</h5>
         <div class="temp-column">
@@ -16,33 +19,11 @@
         </div>
       </div>
     </div>
+
     {% endfor %}
   </div>
 </div>
 
-
-
-
-
-<!-- <table class="weather-table">
-  <tr class="weather-table-header">
-    <th>Date</th>
-    <th>Temperature</th>
-    <th>Description</th>
-    <th>Icon</th>
-  </tr>
-  {% for data in weather_data %}
-  <tr class="weather-table-row">
-    <td>{{ data.date }}</td>
-    <td class="temp-column">
-      <span class="temp-min">↓ {{ data.tempmin }}°</span> | 
-      <span class="temp">{{ data.temp }}°</span> | 
-      <span class="temp-max">↑ {{ data.tempmax }}°</span>
-    </td>
-    <td>{{ data.description }}</td>
-    <td>{{ data.icon | safe}}</td>
-  </tr>
-  {% endfor %}
-</table> -->
+<div id="chart" class="graphics"></div>
 
 {% endif %} {% endblock %}

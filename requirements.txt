@@ -55,6 +55,14 @@ markupsafe==3.0.2
     # via jinja2
 mdurl==0.1.2
     # via markdown-it-py
+mypy==1.14.0
+    # via weather-api (pyproject.toml)
+mypy-extensions==1.0.0
+    # via mypy
+packaging==24.2
+    # via plotly
+plotly==5.24.1
+    # via weather-api (pyproject.toml)
 polars==1.17.1
     # via weather-api (pyproject.toml)
 pydantic==2.10.3
@@ -87,12 +95,15 @@ sqlalchemy==2.0.36
     # via weather-api (pyproject.toml)
 starlette==0.41.3
     # via fastapi
+tenacity==9.0.0
+    # via plotly
 typer==0.15.1
     # via fastapi-cli
 typing-extensions==4.12.2
     # via
     #   anyio
     #   fastapi
+    #   mypy
     #   pydantic
     #   pydantic-core
     #   rich-toolkit
