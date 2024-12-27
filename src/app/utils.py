@@ -1,8 +1,8 @@
 import json
 
-import plotly.graph_objs as go  # type: ignore[import-untyped]
+import plotly.graph_objs as go
 import polars as pl
-from plotly.utils import PlotlyJSONEncoder  # type: ignore[import-untyped]
+from plotly.utils import PlotlyJSONEncoder
 
 from src.app.cache import RedisClient
 
@@ -46,7 +46,6 @@ def get_graph_json_by_dict(
         pl.col('tempmax').cast(pl.Float32),
     )
 
-    # Criar múltiplos objetos Scatter para cada série
     data = [
         go.Scatter(
             x=df_weather_data['date'].to_list(),
