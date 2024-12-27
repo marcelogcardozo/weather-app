@@ -9,4 +9,6 @@ WORKDIR /app
 COPY . .
 RUN uv sync --frozen --no-install-project
 
-CMD ["fastapi", "run"]
+# ENV PATH="/app/.venv/bin:$PATH" # TODO: check if required to run fastapi
+
+CMD ["fastapi", "run", "src/app/main.py"]
