@@ -1,7 +1,6 @@
 import json
 
-import plotly.graph_objs as go
-import plotly.utils as p_utils
+import plotly
 import polars as pl
 
 from src.app.cache import RedisClient
@@ -31,7 +30,9 @@ def set_data_in_cache(key: str, data: str, ex: int) -> None:
         redis_client.set(key, data, ex=ex)
 
 
-def get_graph_json_by_dict(weather_data: dict) -> str:
+def get_graph_json_by_dict(
+    weather_data: list[dict[str, str]] | None,
+) -> str | None:
     if weather_data is None:
         return None
 
@@ -46,19 +47,19 @@ def get_graph_json_by_dict(weather_data: dict) -> str:
 
     # Criar múltiplos objetos Scatter para cada série
     data = [
-        go.Scatter(
+        plotly.go.Scatter(
             x=df_weather_data['date'].to_list(),
             y=df_weather_data['tempmin'].to_list(),
             mode='lines+markers',
             name='Min. Temperature',
         ),
-        go.Scatter(
+        plotly.go.Scatter(
             x=df_weather_data['date'].to_list(),
             y=df_weather_data['temp'].to_list(),
             mode='lines+markers',
             name='Avg. Temperature',
         ),
-        go.Scatter(
+        plotly.go.Scatter(
             x=df_weather_data['date'].to_list(),
             y=df_weather_data['tempmax'].to_list(),
             mode='lines+markers',
@@ -66,7 +67,7 @@ def get_graph_json_by_dict(weather_data: dict) -> str:
         ),
     ]
 
-    layout = go.Layout(
+    layout = plotly.go.Layout(
         title='Temperature Data per Day',
         xaxis={'title': 'Date'},
         yaxis={'title': 'Temperature (°C)'},
@@ -74,6 +75,6 @@ def get_graph_json_by_dict(weather_data: dict) -> str:
         paper_bgcolor='rgba(0,0,0,0)',
     )
 
-    fig = go.Figure(data=data, layout=layout)
+    fig = plotly.go.Figure(data=data, layout=layout)
 
-    return json.dumps(fig, cls=p_utils.PlotlyJSONEncoder)
+    return json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
