@@ -14,7 +14,8 @@ from src.app.utils import (
     get_graph_json_by_dict,
     set_data_in_cache,
 )
-from src.scraper import get_locations, get_weather_data
+from src.scraper.locations_api import get_locations
+from src.scraper.visualcrossing_api import get_weather_data
 
 app = FastAPI(
     title='Weather APP',
