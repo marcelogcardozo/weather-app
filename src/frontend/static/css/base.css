@@ -1,0 +1,32 @@
+:root {
+  --color-background: #f0f2f5;
+  --color-primary: #007bff;
+  --color-white: #fff;
+  --font-family: Arial, sans-serif;
+  --min-width: 700px;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: var(--color-background);
+  font-family: var(--font-family);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  min-width: var(--min-width);
+}

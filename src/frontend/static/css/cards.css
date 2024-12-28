@@ -1,0 +1,53 @@
+/* .title {
+  text-align: center;
+  color: rgb(0, 0, 0);
+  font-size: 2rem;
+}
+
+.subtitle {
+  text-align: center;
+  color: #0056b3;
+}
+
+.description {
+  text-align: center;
+  color: #333;
+} */
+
+/* Cards */
+.card-body {
+  padding: 0.5rem;
+}
+
+.card-img-top {
+  width: 100%;
+  padding: 1rem;
+}
+
+.card-title {
+  text-align: start;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.temp-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.temp-min {
+  color: blue;
+  font-size: 0.7rem;
+}
+
+.temp {
+  color: green;
+  font-size: 0.7rem;
+}
+
+.temp-max {
+  color: red;
+  font-size: 0.7rem;
+}

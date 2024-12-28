@@ -7,23 +7,10 @@
   <br />
 
   <div class="grid-container">
-    {% for data in weather_data %}
-    <div class="card">
-      <img src="{{ data.icon }}" class="card-img-top" />
-      <div class="card-body">
-        <h5 class="card-title">{{ data.date }}</h5>
-        <div class="temp-column">
-          <span class="fs-7 font-monospace">{{ data.tempmin }}°</span>
-          <span class="fs-5 font-monospace">{{ data.temp }}°</span>
-          <span class="fs-7 font-monospace">{{ data.tempmax }}°</span>
-        </div>
-      </div>
-    </div>
-
-    {% endfor %}
+    {% for data in weather_data %} {% include 'partials/weather_card.html' %} {%
+    endfor %}
   </div>
 </div>
 
 <div id="chart" class="graphics"></div>
-
 {% endif %} {% endblock %}
