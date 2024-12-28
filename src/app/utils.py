@@ -5,6 +5,22 @@ import polars as pl
 from plotly.utils import PlotlyJSONEncoder
 
 from src.app.cache import RedisClient
+from src.scraper.locations_api import get_locations
+
+
+def get_locations_and_save_in_cache() -> pl.DataFrame:
+    if not cache_has_key('locations'):
+        df_locations = get_locations()
+        set_data_in_cache(
+            'locations',
+            json.dumps(df_locations.to_dicts()),
+            ex=None,
+        )
+    else:
+        locations_dict = get_cached_data('locations')
+        df_locations = pl.DataFrame(locations_dict)
+
+    return df_locations
 
 
 def cache_has_key(key: str) -> bool:

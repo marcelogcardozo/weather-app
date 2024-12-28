@@ -4,8 +4,8 @@ from datetime import timedelta as td
 from typing import Annotated
 
 import polars as pl
-from fastapi import FastAPI, Form, Request, Response
-from fastapi.responses import RedirectResponse
+from fastapi import FastAPI, Form, HTTPException, Request, Response
+from fastapi.responses import JSONResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
@@ -13,9 +13,9 @@ from src.app.utils import (
     cache_has_key,
     get_cached_data,
     get_graph_json_by_dict,
+    get_locations_and_save_in_cache,
     set_data_in_cache,
 )
-from src.scraper.locations_api import get_locations
 from src.scraper.weather_api import get_weather_data
 
 app = FastAPI(
@@ -32,12 +32,12 @@ app.mount(
 )
 
 
-@app.get('/')
+@app.get('/', include_in_schema=False)
 def home(request: Request, cache_key: str = '') -> Response:
-    df_locations = get_locations()
+    df_locations = get_locations_and_save_in_cache()
 
-    start_date = dt.today()  # noqa: DTZ011
-    final_date = start_date + td(days=14)
+    final_date = dt.today()  # noqa: DTZ011
+    start_date = final_date - td(days=30)
 
     weather_data = get_cached_data(cache_key)
     graph_json = get_graph_json_by_dict(weather_data)
@@ -46,7 +46,7 @@ def home(request: Request, cache_key: str = '') -> Response:
         'index.html',
         {
             'request': request,
-            'title': 'Weather API',
+            'title': 'Weather APP',
             'locations': df_locations['location'].to_list(),
             'start_date': start_date.strftime('%Y-%m-%d'),
             'final_date': final_date.strftime('%Y-%m-%d'),
@@ -54,6 +54,17 @@ def home(request: Request, cache_key: str = '') -> Response:
             'location': cache_key.split(';')[0],
             'graph_json': graph_json,
         },
+    )
+
+
+@app.get('/get_locations')
+def get_locations() -> JSONResponse:
+    """Get locations."""
+
+    locations = get_locations_and_save_in_cache()
+
+    return JSONResponse(
+        locations['location'].to_list(),
     )
 
 
@@ -65,6 +76,18 @@ def get_weather(
 ) -> RedirectResponse:
     """Fetch weather data for a city with caching."""
 
+    if start_date > final_date:
+        raise HTTPException(
+            status_code=400,
+            detail='Start date must be before final date',
+        )
+
+    if final_date > dt.today():  # noqa: DTZ011
+        raise HTTPException(
+            status_code=400,
+            detail='Final date must be before today',
+        )
+
     cache_key = f'{location};{start_date};{final_date}'
 
     if cache_has_key(cache_key):
@@ -74,13 +97,16 @@ def get_weather(
             headers={'cache-key': cache_key},
         )
 
-    df_locations = get_locations()
+    df_locations = get_locations_and_save_in_cache()
 
     df_location = df_locations.filter(pl.col('location') == location)
 
+    latitude = df_location['latitude'][0]
+    longitude = df_location['longitude'][0]
+
     weather_data = get_weather_data(
-        df_location['latitude'][0],
-        df_location['longitude'][0],
+        latitude,
+        longitude,
         start_date,
         final_date,
     )
