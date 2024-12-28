@@ -32,15 +32,16 @@
   <body>
     <header>{% include 'partials/header.html' %}</header>
     <main>{% block content %}{% endblock %}</main>
-
+    <!-- <footer>{% include 'partials/footer.html' %}</footer> -->
     <script
       type="text/javascript"
       src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/8.1.0/mdb.umd.min.js"
     ></script>
+
     {% block scripts %}
     <script>
       var graphJSON = {{ graph_json | safe }};
-      Plotly.newPlot('chart', graphJSON.data, graphJSON.layout);
+      Plotly.newPlot('chart-temp-per-day', graphJSON.data, graphJSON.layout);
     </script>
     {% endblock %}
   </body>
