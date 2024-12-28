@@ -3,6 +3,7 @@ from datetime import date as dt
 from datetime import timedelta as td
 from typing import Annotated
 
+import polars as pl
 from fastapi import FastAPI, Form, Request, Response
 from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
@@ -15,7 +16,7 @@ from src.app.utils import (
     set_data_in_cache,
 )
 from src.scraper.locations_api import get_locations
-from src.scraper.visualcrossing_api import get_weather_data
+from src.scraper.weather_api import get_weather_data
 
 app = FastAPI(
     title='Weather APP',
@@ -73,8 +74,13 @@ def get_weather(
             headers={'cache-key': cache_key},
         )
 
+    df_locations = get_locations()
+
+    df_location = df_locations.filter(pl.col('location') == location)
+
     weather_data = get_weather_data(
-        location,
+        df_location['latitude'][0],
+        df_location['longitude'][0],
         start_date,
         final_date,
     )

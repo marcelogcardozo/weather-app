@@ -9,19 +9,19 @@ services:
       REDIS_DB: ${REDIS_DB}
     command: redis-server
     healthcheck:
-      test: ['CMD', 'redis-cli', 'ping']
+      test: ["CMD", "redis-cli", "ping"]
       interval: 5s
       timeout: 5s
       retries: 3
     ports:
-      - '${REDIS_PORT}:6379'
+      - "${REDIS_PORT}:6379"
     volumes:
       - redis-data:/data
 
   app:
     build: .
     ports:
-      - '${WEB_PORT}:8000'
+      - "${WEB_PORT}:8000"
     env_file:
       - path: .env
         required: true
@@ -34,7 +34,6 @@ services:
       REDIS_USERNAME: ${REDIS_USERNAME}
       REDIS_PASSWORD: ${REDIS_PASSWORD}
       REDIS_DB: ${REDIS_DB}
-      WEATHER_API_KEY: ${WEATHER_API_KEY}
       WEB_PORT: ${WEB_PORT}
 
 volumes:

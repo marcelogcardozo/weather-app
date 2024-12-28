@@ -3,13 +3,17 @@ import polars as pl
 from src.scraper.locations_api import config
 
 
-def get_locations() -> pl.DataFrame:
-    def read_csv(file_name: str, columns: list[str]) -> pl.DataFrame:
-        return pl.read_csv(config.get_csv_url(file_name), columns=columns)
+def _read_csv(file_name: str, columns: list[str]) -> pl.DataFrame:
+    return pl.read_csv(
+        config.get_csv_url(file_name),
+        columns=columns,
+    )
 
-    countries = read_csv('countries', ['id', 'iso2'])
-    states = read_csv('states', ['id', 'name', 'country_id'])
-    cities = read_csv('cities', ['name', 'state_id', 'latitude', 'longitude'])
+
+def get_locations() -> pl.DataFrame:
+    countries = _read_csv('countries', ['id', 'iso2', 'timezones'])
+    states = _read_csv('states', ['id', 'name', 'country_id'])
+    cities = _read_csv('cities', ['name', 'state_id', 'latitude', 'longitude'])
 
     countries = countries.filter(pl.col('iso2') == 'BR')
 
@@ -33,14 +37,14 @@ def get_locations() -> pl.DataFrame:
         ).with_columns(
             (
                 pl.col('name_right')
-                + ','
+                + ', '
                 + pl.col('name')
-                + ','
+                + ', '
                 + pl.col('iso2')
             ).alias('location'),
         )
     )
 
     return cities_with_state_and_country_info.select(
-        ['location', 'latitude', 'longitude'],
+        ['location', 'timezones', 'latitude', 'longitude'],
     )

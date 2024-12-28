@@ -11,6 +11,9 @@ certifi==2024.12.14
     # via
     #   httpcore
     #   httpx
+    #   requests
+charset-normalizer==3.4.1
+    # via requests
 click==8.1.7
     # via
     #   rich-toolkit
@@ -43,6 +46,7 @@ idna==3.10
     #   anyio
     #   email-validator
     #   httpx
+    #   requests
 jinja2==3.1.4
     # via
     #   weather-api (pyproject.toml)
@@ -75,6 +79,8 @@ pyyaml==6.0.2
     # via uvicorn
 redis==5.2.1
     # via weather-api (pyproject.toml)
+requests==2.32.3
+    # via weather-api (pyproject.toml)
 rich==13.9.4
     # via
     #   rich-toolkit
@@ -99,6 +105,8 @@ typing-extensions==4.12.2
     #   pydantic-core
     #   rich-toolkit
     #   typer
+urllib3==2.3.0
+    # via requests
 uvicorn==0.34.0
     # via
     #   fastapi
