@@ -11,6 +11,7 @@ from fastapi.templating import Jinja2Templates
 
 from src.app.utils import (
     cache_has_key,
+    get_cache_health,
     get_cached_data,
     get_graph_json_by_dict,
     get_locations_and_save_in_cache,
@@ -34,6 +35,14 @@ app.mount(
 
 @app.get('/', include_in_schema=False)
 def home(request: Request, cache_key: str = '') -> Response:
+    redis_is_ok = get_cache_health()
+
+    if not redis_is_ok:
+        return Response(
+            content='Redis is not available',
+            status_code=503,
+        )
+
     df_locations = get_locations_and_save_in_cache()
 
     final_date = dt.today()  # noqa: DTZ011

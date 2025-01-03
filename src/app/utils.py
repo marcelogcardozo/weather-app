@@ -3,9 +3,20 @@ import json
 import plotly.graph_objs as go
 import polars as pl
 from plotly.utils import PlotlyJSONEncoder
+from redis.exceptions import ConnectionError as RedisConnectionError
 
 from src.app.cache import RedisClient
 from src.scraper.locations_api import get_locations
+
+
+def get_cache_health() -> bool:
+    with RedisClient() as redis_client:
+        try:
+            redis_client.ping()
+        except RedisConnectionError:
+            return False
+        else:
+            return True
 
 
 def get_locations_and_save_in_cache() -> pl.DataFrame:
