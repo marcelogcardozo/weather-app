@@ -1,5 +1,5 @@
 :root {
-  --color-background: #f0f2f5;
+  --color-background: rgb(246, 246, 248);
   --color-primary: #007bff;
   --color-white: #fff;
   --font-family: Arial, sans-serif;
@@ -16,9 +16,15 @@ body {
   vertical-align: baseline;
   height: 100%;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 body {
+  width: 80%;
+  height: 90%;
   display: flex;
   flex-direction: column;
 

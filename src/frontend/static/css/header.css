@@ -9,7 +9,7 @@ header {
 
 .form-container {
   height: 100%;
-  width: 20%;
+  width: 25%;
   background-color: white;
   padding: 2rem;
 }
@@ -40,7 +40,7 @@ header {
 }
 
 .input-location-container {
-  width: 80%;
+  width: 90%;
   height: 100%;
   display: flex;
   flex-direction: row;
@@ -49,7 +49,7 @@ header {
 }
 
 .form-button-container {
-  width: 15%;
+  width: 10%;
   height: 100%;
 }
 
@@ -82,7 +82,7 @@ header {
 .week-status-menu-navbar-item-link:hover {
   color: #000000;
   text-decoration: underline;
-  text-underline-offset: 4px;
+  text-underline-offset: 6px;
 }
 
 .week-status-menu-select-unity {

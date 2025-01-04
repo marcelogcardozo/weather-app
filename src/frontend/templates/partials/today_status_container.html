@@ -1,0 +1,32 @@
+<div class="today-status-container">
+  <div class="today-status-image">
+    <img
+      src="{{ url_for('static', path='./assets/images/clear-day.svg')}}"
+      alt=""
+      class=""
+    />
+  </div>
+  <div class="today-status-status">
+    <div class="today-status-temperature">
+      <span class="today-status-temperature-value">12</span>
+      <span class="today-status-temperature-unit">°C</span>
+    </div>
+    <div class="today-status-date">
+      <span class="today-status-date-day-of-week">Monday,</span>
+      <span class="today-status-date-time">12:00</span>
+    </div>
+    <hr class="hr" />
+    <div class="today-status-summary">
+      <span class="today-status-summary-text"
+        ><i class="fa-solid fa-cloud"></i> Clear</span
+      >
+      <span class="today-status-summary-rain-probability"
+        ><i class="fa-solid fa-droplet"></i> 0%</span
+      >
+    </div>
+    <hr class="hr" />
+    <div class="today-status-location">
+      <span class="today-status-location-text">Rio de Janeiro, RJ</span>
+    </div>
+  </div>
+</div>

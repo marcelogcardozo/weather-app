@@ -1,37 +1,52 @@
-/* Cards */
-.card-body {
-  padding: 0.5rem;
+/* Daily Weather Cards */
+
+.general-status-daily-forecast > .card {
+  height: 100%;
+  width: max(12%, 100px);
 }
 
-.card-img-top {
+.general-status-daily-forecast > .card > .card-header {
+  height: 20%;
   width: 100%;
-  padding: 1rem;
+  font-size: 1rem;
+  font-weight: 600;
 }
 
-.card-title {
-  text-align: start;
-  font-size: 0.8rem;
-  font-weight: bold;
+.general-status-daily-forecast > .card > .card-body {
+  height: 60%;
+  width: 100%;
 }
 
-.temp-column {
+.general-status-daily-forecast > .card > .card-body > img {
+  width: 80%;
+  height: 100%;
+}
+
+.general-status-daily-forecast > .card > .card-footer {
+  height: 20%;
+  width: 100%;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  flex-direction: row;
+  justify-content: space-around;
   align-items: center;
 }
 
-.temp-min {
-  color: blue;
-  font-size: 0.7rem;
+.general-status-daily-forecast > .card > .card-footer > span {
+  font-size: 1em;
 }
 
-.temp {
-  color: green;
-  font-size: 0.7rem;
+.general-status-daily-forecast > .card > .card-footer > .card-footer-text-1 {
+  font-weight: bold;
 }
 
-.temp-max {
-  color: red;
-  font-size: 0.7rem;
+/* Insights Cards */
+
+.today-insights-insights > .row-insights > .card {
+  height: 100%;
+  width: 30%;
+  font-size: 1.1em;
+}
+
+.today-insights-insights > .row-insights > .card > .card-header {
+  text-align: center;
 }
