@@ -21,12 +21,8 @@ body {
 body {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+
   background-color: var(--color-background);
   font-family: var(--font-family);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  height: 100%;
   min-width: var(--min-width);
 }

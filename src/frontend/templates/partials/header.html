@@ -1,63 +1,49 @@
-<div class="d-flex flex-row logo-container" onclick="window.location='/';">
-  <img
-    src="{{ url_for('static', path='./assets/weather-icon.ico') }}"
-    alt="Weather App"
-    style="align-self: center"
-  />
-  <h1 class="fs-3 font-monospace">Weather APP</h1>
-</div>
 <div class="form-container">
-  <form
-    action="{{ url_for('get_weather') }}"
-    method="post"
-    id="input-form"
-    class="input-form"
-  >
-    <div class="form-outline d-flex flex-row input-location-container">
-      <select
-        name="location"
-        id="location"
-        class="form-select font-monospace"
-        required
-      >
-        <option value="" disabled selected>Search for cities</option>
-        {% for location in locations %}
-        <option value="{{ location }}">{{ location }}</option>
-        {% endfor %}
-      </select>
-    </div>
-    <div class="input-dates-button-container">
-      <div class="input-dates-container">
-        <div class="d-flex flex-row input-initial-date-container">
-          <label for="start_date">Start date:</label>
-          <input
-            type="date"
-            id="start_date"
-            name="start_date"
-            value="{{ start_date }}"
-            class="form-input font-monospace"
-          />
-        </div>
-        <div class="d-flex flex-row input-final-date-container">
-          <label for="final_date">Final date:</label>
-          <input
-            type="date"
-            id="final_date"
-            name="final_date"
-            value="{{ final_date }}"
-            class="form-input font-monospace"
-          />
-        </div>
+  <div class="form-input-container">
+    <form
+      action="{{ url_for('get_weather') }}"
+      method="post"
+      id="input-form"
+      class="input-form"
+    >
+      <div class="form-outline d-flex input-location-container">
+        <select name="location" id="location" class="form-select" required>
+          <option value="" disabled selected>Search for cities</option>
+          {% for location in locations %}
+          <option value="{{ location }}">{{ location }}</option>
+          {% endfor %}
+        </select>
       </div>
+
       <div class="d-flex form-button-container">
         <button
           type="submit"
           id="get-forecast-button"
-          class="btn btn-primary btn-rounded font-monospace"
+          class="btn btn-link btn-rounded"
+          data-mdb-ripple-init
+          data-mdb-ripple-color="dark"
         >
-          <i class="fas fa-search"></i>
+          <i class="fa-solid fa-magnifying-glass" style="color: #000000"></i>
         </button>
       </div>
+    </form>
+  </div>
+</div>
+<div class="week-status-menu">
+  <div class="week-status-menu-navbar">
+    <div class="week-status-menu-navbar-item">
+      <a href="#" class="week-status-menu-navbar-item-link">Today</a>
     </div>
-  </form>
+    <div class="week-status-menu-navbar-item">
+      <a href="#" class="week-status-menu-navbar-item-link">Week</a>
+    </div>
+  </div>
+  <div class="week-status-menu-select-unity">
+    <button type="button" class="btn btn-light btn-rounded">
+      <span>°C</span>
+    </button>
+    <button type="button" class="btn btn-dark btn-rounded">
+      <span>°F</span>
+    </button>
+  </div>
 </div>

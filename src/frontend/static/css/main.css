@@ -1,41 +1,111 @@
 main {
-  padding: 2rem;
   width: 100%;
-  height: 90%;
+  height: 85%;
   display: flex;
-  justify-content: center;
+  flex-direction: row;
+  justify-content: space-around;
   align-items: center;
+
+  background-color: blue;
 }
 
-.daily-forecasts {
+.today-status-container {
+  width: 20%;
+  height: 100%;
+  display: flex;
   flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  padding: 2rem;
+  background-color: white;
+}
+
+.today-status-image {
+  width: 100%;
+  height: 35%;
+}
+
+.today-status-image > img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.today-status-status {
+  width: 100%;
+  height: 60%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.today-status-temperature {
+  width: 100%;
+  height: 25%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   justify-content: start;
-  height: 100%;
-  width: 100%;
 }
 
-.grid-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(90px, 90px));
-  gap: 1rem;
+.today-status-temperature-value {
+  font-size: 6rem;
+  padding-top: 1rem;
 }
 
-.graphics {
+.today-status-temperature-unit {
+  font-size: 2rem;
+}
+
+.today-status-date {
   width: 100%;
+  height: 15%;
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  justify-content: start;
+}
+
+.today-status-date-day-of-week {
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.today-status-date-time {
+  font-size: 1.5rem;
+  color: #a3a3a3;
+}
+
+.today-status-summary {
+  width: 100%;
+  height: 25%;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: space-around;
+  font-size: 1.2rem;
+}
+
+.today-status-location {
+  width: 100%;
+  height: 20%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+}
+
+.today-status-location-text {
+  font-size: 1.2rem;
+}
+
+.week-status-container {
+  width: 80%;
   height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
   padding: 1rem;
-}
-
-.chart-temp-per-day {
-  width: 100%;
-  height: 50%;
-}
-
-/* Responsividade */
-@media (max-width: 1540px) {
-  main {
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-  }
+  background-color: rgb(246, 246, 248);
 }
