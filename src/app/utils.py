@@ -1,8 +1,6 @@
 import json
 
-import plotly.graph_objs as go
 import polars as pl
-from plotly.utils import PlotlyJSONEncoder
 from redis.exceptions import ConnectionError as RedisConnectionError
 
 from src.app.cache import RedisClient
@@ -56,52 +54,3 @@ def get_cached_data(key: str | None) -> list[dict[str, str]] | None:
 def set_data_in_cache(key: str, data: str, ex: int) -> None:
     with RedisClient() as redis_client:
         redis_client.set(key, data, ex=ex)
-
-
-def get_graph_json_by_dict(
-    weather_data: list[dict[str, str]] | None,
-) -> str | None:
-    if weather_data is None:
-        return None
-
-    df_weather_data = pl.DataFrame(data=weather_data)
-
-    df_weather_data = df_weather_data.with_columns(
-        pl.col('date').str.to_date('%d/%m/%Y').alias('date'),
-        pl.col('tempmin').cast(pl.Float32),
-        pl.col('temp').cast(pl.Float32),
-        pl.col('tempmax').cast(pl.Float32),
-    )
-
-    data = [
-        go.Scatter(
-            x=df_weather_data['date'].to_list(),
-            y=df_weather_data['tempmin'].to_list(),
-            mode='lines+markers',
-            name='Min. Temperature',
-        ),
-        go.Scatter(
-            x=df_weather_data['date'].to_list(),
-            y=df_weather_data['temp'].to_list(),
-            mode='lines+markers',
-            name='Avg. Temperature',
-        ),
-        go.Scatter(
-            x=df_weather_data['date'].to_list(),
-            y=df_weather_data['tempmax'].to_list(),
-            mode='lines+markers',
-            name='Máx. Temperature',
-        ),
-    ]
-
-    layout = go.Layout(
-        title='Temperature Data per Day',
-        xaxis={'title': 'Date'},
-        yaxis={'title': 'Temperature (°C)'},
-        legend={'title': 'Legend'},
-        paper_bgcolor='rgba(0,0,0,0)',
-    )
-
-    fig = go.Figure(data=data, layout=layout)
-
-    return json.dumps(fig, cls=PlotlyJSONEncoder)

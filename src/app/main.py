@@ -1,10 +1,9 @@
 import json
-from datetime import date as dt
-from datetime import timedelta as td
+from datetime import datetime as dt
 from typing import Annotated
 
 import polars as pl
-from fastapi import FastAPI, Form, HTTPException, Request, Response
+from fastapi import FastAPI, Form, Request, Response
 from fastapi.responses import JSONResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -13,7 +12,6 @@ from src.app.utils import (
     cache_has_key,
     get_cache_health,
     get_cached_data,
-    get_graph_json_by_dict,
     get_locations_and_save_in_cache,
     set_data_in_cache,
 )
@@ -45,11 +43,7 @@ def home(request: Request, cache_key: str = '') -> Response:
 
     df_locations = get_locations_and_save_in_cache()
 
-    final_date = dt.today()  # noqa: DTZ011
-    start_date = final_date - td(days=30)
-
     weather_data = get_cached_data(cache_key)
-    graph_json = get_graph_json_by_dict(weather_data)
 
     return templates.TemplateResponse(
         'index.html',
@@ -57,11 +51,22 @@ def home(request: Request, cache_key: str = '') -> Response:
             'request': request,
             'title': 'Weather APP',
             'locations': df_locations['location'].to_list(),
-            'start_date': start_date.strftime('%Y-%m-%d'),
-            'final_date': final_date.strftime('%Y-%m-%d'),
-            'weather_data': weather_data,
             'location': cache_key.split(';')[0],
-            'graph_json': graph_json,
+            'unity': '°C',
+            'last_week': weather_data[0] if weather_data else [],
+            'current_week': weather_data[1] if weather_data else [],
+            'next_week': weather_data[2] if weather_data else [],
+            'now': dt.today(),  # noqa: DTZ002
+            'today': next(
+                (
+                    item
+                    for item in weather_data[1]
+                    if item['date'] == dt.today().strftime('%Y-%m-%d')  # noqa: DTZ002
+                ),
+                None,
+            )
+            if weather_data
+            else {},
         },
     )
 
@@ -80,24 +85,10 @@ def get_locations() -> JSONResponse:
 @app.post('/get_weather')
 def get_weather(
     location: Annotated[str, Form()],
-    start_date: Annotated[dt, Form()],
-    final_date: Annotated[dt, Form()],
 ) -> RedirectResponse:
     """Fetch weather data for a city with caching."""
 
-    if start_date > final_date:
-        raise HTTPException(
-            status_code=400,
-            detail='Start date must be before final date',
-        )
-
-    if final_date > dt.today():  # noqa: DTZ011
-        raise HTTPException(
-            status_code=400,
-            detail='Final date must be before today',
-        )
-
-    cache_key = f'{location};{start_date};{final_date}'
+    cache_key = f'{location}'
 
     if cache_has_key(cache_key):
         return RedirectResponse(
@@ -116,8 +107,6 @@ def get_weather(
     weather_data = get_weather_data(
         latitude,
         longitude,
-        start_date,
-        final_date,
     )
 
     set_data_in_cache(cache_key, json.dumps(weather_data), 60)

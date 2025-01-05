@@ -1,89 +1,21 @@
 <div class="general-status-container">
   <div class="general-status-daily-forecast">
+    {% for day in current_week %}
+
     <div class="card text-center">
-      <div class="card-header">Sun</div>
+      <div class="card-header">{{ day['day_of_week'] }}</div>
       <div class="card-body">
         <img
           src="{{ url_for('static', path='./assets/images/clear-night.svg') }}"
         />
       </div>
       <div class="card-footer text-muted">
-        <span class="card-footer-text-1">15°</span>
-        <span class="card-footer-text-2"> -3°</span>
+        <span class="card-footer-text-1">{{ day['max_temperature'] }}°</span>
+        <span class="card-footer-text-2"> {{ day['min_temperature'] }}°</span>
       </div>
     </div>
 
-    <div class="card text-center">
-      <div class="card-header">Mon</div>
-      <div class="card-body">
-        <img
-          src="{{ url_for('static', path='./assets/images/clear-day.svg') }}"
-        />
-      </div>
-      <div class="card-footer text-muted">
-        <span class="card-footer-text-1">15°</span>
-        <span class="card-footer-text-2"> -3°</span>
-      </div>
-    </div>
-
-    <div class="card text-center">
-      <div class="card-header">Tue</div>
-      <div class="card-body">
-        <img src="{{ url_for('static', path='./assets/images/fog.svg') }}" />
-      </div>
-      <div class="card-footer text-muted">
-        <span class="card-footer-text-1">15°</span>
-        <span class="card-footer-text-2"> -3°</span>
-      </div>
-    </div>
-
-    <div class="card text-center">
-      <div class="card-header">Wed</div>
-      <div class="card-body">
-        <img src="{{ url_for('static', path='./assets/images/rain.svg') }}" />
-      </div>
-      <div class="card-footer text-muted">
-        <span class="card-footer-text-1">15°</span>
-        <span class="card-footer-text-2"> -3°</span>
-      </div>
-    </div>
-
-    <div class="card text-center">
-      <div class="card-header">Thu</div>
-      <div class="card-body">
-        <img
-          src="{{ url_for('static', path='./assets/images/thunder-rain.svg') }}"
-        />
-      </div>
-      <div class="card-footer text-muted">
-        <span class="card-footer-text-1">15°</span>
-        <span class="card-footer-text-2"> -3°</span>
-      </div>
-    </div>
-
-    <div class="card text-center">
-      <div class="card-header">Fri</div>
-      <div class="card-body">
-        <img
-          src="{{ url_for('static', path='./assets/images/showers-day.svg') }}"
-        />
-      </div>
-      <div class="card-footer text-muted">
-        <span class="card-footer-text-1">15°</span>
-        <span class="card-footer-text-2"> -3°</span>
-      </div>
-    </div>
-
-    <div class="card text-center">
-      <div class="card-header">Sat</div>
-      <div class="card-body">
-        <img src="{{ url_for('static', path='./assets/images/wind.svg') }}" />
-      </div>
-      <div class="card-footer text-muted">
-        <span class="card-footer-text-1">15°</span>
-        <span class="card-footer-text-2"> -3°</span>
-      </div>
-    </div>
+    {% endfor %}
   </div>
 
   <div class="general-status-today-insights">

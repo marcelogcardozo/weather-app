@@ -47,7 +47,7 @@ main {
 }
 
 .today-status-temperature-value {
-  font-size: 6rem;
+  font-size: 5rem;
   padding-top: 1rem;
 }
 
@@ -65,11 +65,14 @@ main {
 }
 
 .today-status-date-day-of-week {
+  padding-top: 0.5rem;
+  padding-right: 0.5rem;
   font-size: 1.5rem;
   font-weight: 500;
 }
 
 .today-status-date-time {
+  padding-top: 0.5rem;
   font-size: 1.5rem;
   color: #a3a3a3;
 }

@@ -8,12 +8,17 @@
   </div>
   <div class="today-status-status">
     <div class="today-status-temperature">
-      <span class="today-status-temperature-value">12</span>
-      <span class="today-status-temperature-unit">°C</span>
+      <span class="today-status-temperature-value">
+        {{ today['temperature'] }}
+      </span>
+
+      <span class="today-status-temperature-unit">{{ unity }}</span>
     </div>
     <div class="today-status-date">
-      <span class="today-status-date-day-of-week">Monday,</span>
-      <span class="today-status-date-time">12:00</span>
+      <span class="today-status-date-day-of-week"
+        >{{ now.strftime("%A") }},</span
+      >
+      <span class="today-status-date-time"> {{ now.strftime("%H:%M") }}</span>
     </div>
     <hr class="hr" />
     <div class="today-status-summary">
@@ -26,7 +31,7 @@
     </div>
     <hr class="hr" />
     <div class="today-status-location">
-      <span class="today-status-location-text">Rio de Janeiro, RJ</span>
+      <span class="today-status-location-text">{{ location }}</span>
     </div>
   </div>
 </div>

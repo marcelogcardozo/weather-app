@@ -1,3 +1,4 @@
+from datetime import datetime as dt
 from urllib.parse import urlencode, urljoin
 
 import polars as pl
@@ -8,21 +9,21 @@ from src.scraper.weather_api.config import BASE_API_URL
 def build_api_url(
     latitude: float,
     longitude: float,
-    start_date: str,
-    final_date: str,
 ) -> str:
     params = {
         'latitude': latitude,
         'longitude': longitude,
-        'start_date': start_date,
-        'end_date': final_date,
-        'hourly': ['temperature_2m', 'apparent_temperature'],
+        'hourly': ['temperature_2m', 'relative_humidity_2m'],
         'daily': [
             'temperature_2m_max',
             'temperature_2m_min',
-            'apparent_temperature_max',
-            'apparent_temperature_min',
+            'sunrise',
+            'sunset',
+            'uv_index_max',
         ],
+        'timezone': 'America/Sao_Paulo',
+        'past_days': 14,
+        'forecast_days': 14,
     }
 
     params_tratados = {}
@@ -47,8 +48,8 @@ def _mount_hourly_dataframe_grouped_by_day(
     hourly_df = hourly_df.rename(
         {
             'time': 'date',
-            'temperature_2m': 'temp',
-            'apparent_temperature': 'apparent_temp',
+            'temperature_2m': 'temperature',
+            'relative_humidity_2m': 'relative_humidity',
         },
     )
 
@@ -80,10 +81,8 @@ def _mount_daily_dataframe(data: dict[str, list[float]]) -> pl.DataFrame:
     daily_df = daily_df.rename(
         {
             'time': 'date',
-            'temperature_2m_max': 'tempmax',
-            'temperature_2m_min': 'tempmin',
-            'apparent_temperature_max': 'apparent_tempmax',
-            'apparent_temperature_min': 'apparent_tempmin',
+            'temperature_2m_max': 'max_temperature',
+            'temperature_2m_min': 'min_temperature',
         },
     )
 
@@ -104,17 +103,38 @@ def mount_dataframe(data: dict) -> pl.DataFrame:
     df_weather_data_by_day = df_daily_average.join(df_daily, on='date')
 
     df_weather_data_by_day = df_weather_data_by_day.with_columns(
-        pl.col('date').dt.strftime('%d/%m/%Y').alias('date'),
+        pl.col('date').dt.strftime('%a').alias('day_of_week'),
+        pl.col('date').dt.strftime('%A').alias('day_of_week_full'),
+    )
+
+    df_weather_data_by_day = df_weather_data_by_day.with_columns(
+        pl.col('date').dt.strftime('%Y-%m-%d').alias('date'),
     )
 
     return df_weather_data_by_day.select(
         [
             'date',
-            'tempmin',
-            'temp',
-            'tempmax',
-            'apparent_tempmin',
-            'apparent_temp',
-            'apparent_tempmax',
+            'day_of_week',
+            'day_of_week_full',
+            'temperature',
+            'min_temperature',
+            'max_temperature',
+            'relative_humidity',
+            'sunrise',
+            'sunset',
+            'uv_index_max',
         ],
     )
+
+
+def separate_forecast_by_weeks(
+    df: pl.DataFrame,
+    last_week: list[dt],
+    current_week: list[dt],
+    next_week: list[dt],
+) -> list[pl.DataFrame]:
+    last_week_df = df.filter(pl.col('date').is_in(last_week))
+    current_week_df = df.filter(pl.col('date').is_in(current_week))
+    next_week_df = df.filter(pl.col('date').is_in(next_week))
+
+    return [last_week_df, current_week_df, next_week_df]

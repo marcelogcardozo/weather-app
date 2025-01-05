@@ -1,1 +1,1 @@
-BASE_API_URL = 'https://historical-forecast-api.open-meteo.com/v1/forecast'
+BASE_API_URL = 'https://api.open-meteo.com/v1/forecast'
