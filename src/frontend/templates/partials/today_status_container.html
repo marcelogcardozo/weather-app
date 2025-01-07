@@ -9,7 +9,7 @@
   <div class="today-status-status">
     <div class="today-status-temperature">
       <span class="today-status-temperature-value">
-        {{ today['temperature'] }}
+        {{ today.get('temperature', 0) }}
       </span>
 
       <span class="today-status-temperature-unit">{{ unity }}</span>

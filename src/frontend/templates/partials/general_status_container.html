@@ -26,7 +26,21 @@
       <div class="row-insights">
         <div class="card">
           <div class="card-header">UV Index</div>
-          <div class="card-body"></div>
+          <div class="card-body">
+            <div class="gauge-container">
+              <canvas id="gauge"></canvas>
+              <input
+                type="range"
+                id="gaugeValue"
+                min="0"
+                max="100"
+                value="{{ today.get('uv_index_max', 0) / 15 * 100 }}"
+                step="1"
+                oninput="updateGauge()"
+                hidden
+              />
+            </div>
+          </div>
         </div>
         <div class="card">
           <div class="card-header">Wind Status</div>
