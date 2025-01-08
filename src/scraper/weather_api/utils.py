@@ -13,13 +13,21 @@ def build_api_url(
     params = {
         'latitude': latitude,
         'longitude': longitude,
-        'hourly': ['temperature_2m', 'relative_humidity_2m'],
+        'hourly': [
+            'temperature_2m',
+            'relative_humidity_2m',
+            'visibility',
+            'cloud_cover',
+        ],
         'daily': [
             'temperature_2m_max',
             'temperature_2m_min',
             'sunrise',
             'sunset',
             'uv_index_max',
+            'precipitation_probability_max',
+            'wind_speed_10m_max',
+            'wind_direction_10m_dominant',
         ],
         'timezone': 'America/Sao_Paulo',
         'past_days': 14,
@@ -50,6 +58,8 @@ def _mount_hourly_dataframe_grouped_by_day(
             'time': 'date',
             'temperature_2m': 'temperature',
             'relative_humidity_2m': 'relative_humidity',
+            'cloud_cover': 'cloud_cover',
+            'visibility': 'visibility',
         },
     )
 
@@ -58,6 +68,7 @@ def _mount_hourly_dataframe_grouped_by_day(
         .str.to_datetime(strict=False)
         .dt.strftime('%Y-%m-%d')
         .alias('date'),
+        pl.col('visibility').truediv(1000).round(1).alias('visibility'),
     )
 
     grouped_df = hourly_df.group_by('date').agg(
@@ -83,11 +94,22 @@ def _mount_daily_dataframe(data: dict[str, list[float]]) -> pl.DataFrame:
             'time': 'date',
             'temperature_2m_max': 'max_temperature',
             'temperature_2m_min': 'min_temperature',
+            'precipitation_probability_max': 'precipitation_probability',
+            'wind_speed_10m_max': 'wind_speed_max',
+            'wind_direction_10m_dominant': 'wind_direction_dominant',
         },
     )
 
     return daily_df.with_columns(
         pl.col('date').str.to_datetime(strict=False).alias('date'),
+        pl.col('sunrise')
+        .str.to_datetime(strict=False)
+        .dt.strftime('%H:%M')
+        .alias('sunrise'),
+        pl.col('sunset')
+        .str.to_datetime(strict=False)
+        .dt.strftime('%H:%M')
+        .alias('sunset'),
     )
 
 
@@ -123,6 +145,11 @@ def mount_dataframe(data: dict) -> pl.DataFrame:
             'sunrise',
             'sunset',
             'uv_index_max',
+            'precipitation_probability',
+            'wind_speed_max',
+            'wind_direction_dominant',
+            'cloud_cover',
+            'visibility',
         ],
     )
 

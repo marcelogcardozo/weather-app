@@ -23,10 +23,16 @@
     <hr class="hr" />
     <div class="today-status-summary">
       <span class="today-status-summary-text"
-        ><i class="fa-solid fa-cloud"></i> Clear</span
+        ><i class="fa-solid fa-cloud"></i> {{ 'Clear' if
+        today.get("cloud_cover", 0.0) < 20 else ('Partly Cloud' if
+        today.get("cloud_cover") < 40 else ('Mostly Cloudy' if
+        today.get("cloud_cover") < 60 else ('Overcast' if
+        today.get("cloud_cover") < 80 else 'Cloudy'))) }} ({{
+        today.get("cloud_cover") }}%)</span
       >
       <span class="today-status-summary-rain-probability"
-        ><i class="fa-solid fa-droplet"></i> 0%</span
+        ><i class="fa-solid fa-droplet"></i> {{
+        today.get("precipitation_probability", 0) }}%</span
       >
     </div>
     <hr class="hr" />

@@ -28,7 +28,9 @@
           <div class="card-header">UV Index</div>
           <div class="card-body">
             <div class="gauge-container">
+              <p>0</p>
               <canvas id="gauge"></canvas>
+              <p>15</p>
               <input
                 type="range"
                 id="gaugeValue"
@@ -44,32 +46,62 @@
         </div>
         <div class="card">
           <div class="card-header">Wind Status</div>
-          <div class="card-body">
-            <h5 class="card-title"></h5>
-            <p class="card-text"></p>
+          <div class="card-body wind-status-container">
+            <div class="max-wind-speed">
+              <span class="max-wind-speed-text"
+                >{{ today.get('wind_speed_max', 0) }}</span
+              >
+              <span class="max-wind-speed-unit">Km/h</span>
+            </div>
+            <div class="wind-direction">
+              <img
+                src="{{ url_for('static', path='./assets/images/arrow.svg') }}"
+                style="transform: rotate({{ today.get('wind_direction_dominant', 0) }}deg)"
+              />
+            </div>
           </div>
         </div>
         <div class="card">
           <div class="card-header">Sunrise & Sunset</div>
-          <div class="card-body">
-            <h5 class="card-title"></h5>
-            <p class="card-text"></p>
+          <div class="card-body sunset-sunrise-container">
+            <div class="sunrise-container">
+              <i class="fa-regular fa-sun"></i
+              ><span class="sunrise-text"
+                >{{ today.get('sunrise', '00:00') }}</span
+              >
+              <span class="sunrise-unity"> a.m </span>
+            </div>
+            <div class="sunset-container">
+              <i class="fa-regular fa-moon"></i
+              ><span class="sunset-text"
+                >{{ today.get('sunset', '00:00') }}
+              </span>
+              <span class="sunset-unity"> p.m </span>
+            </div>
           </div>
         </div>
       </div>
       <div class="row-insights">
         <div class="card">
-          <div class="card-header">Humity</div>
-          <div class="card-body">
-            <h5 class="card-title"></h5>
-            <p class="card-text"></p>
+          <div class="card-header">Humidity</div>
+          <div class="card-body relative-humidity-container">
+            <div class="relative-humidity">
+              <span class="relative-humidity-text"
+                >{{ today.get('relative_humidity', 0) }}</span
+              >
+              <span class="relative-humidity-unit">%</span>
+            </div>
           </div>
         </div>
         <div class="card">
           <div class="card-header">Visibility</div>
-          <div class="card-body">
-            <h5 class="card-title"></h5>
-            <p class="card-text"></p>
+          <div class="card-body visibility-container">
+            <div class="visibility">
+              <span class="visibility-text"
+                >{{ today.get('visibility', 0.0) }}</span
+              >
+              <span class="visibility-unit">Km</span>
+            </div>
           </div>
         </div>
         <div class="card">
